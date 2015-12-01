@@ -8,8 +8,9 @@ public class StateNode {
 	int score;
 	List<int[]> posPath;
 	
-	public StateNode (List<int[]> posPath) {
+	public StateNode (List<int[]> posPath, int score) {
 		this.posPath = posPath;		
+		this.score = score;
 	}
 	
 }
