@@ -32,22 +32,6 @@ public class ForwardAgent extends BasicAIAgent implements Agent
         trueSpeedCounter = 0;
     }
 
-    private boolean DangerOfGap(byte[][] levelScene)
-    {
-        for (int x = 9; x < 13; ++x)
-        {
-            boolean f = true;
-            for(int y = 12; y < 22; ++y)
-            {
-                if  (levelScene[y][x] != 0)
-                    f = false;
-            }
-            if (f && levelScene[12][11] != 0)
-                return true;
-        }
-        return false;
-    }
-
     private byte[][] decode(String estate)
     {
         byte[][] dstate = new byte[Environment.HalfObsWidth*2][Environment.HalfObsHeight*2];

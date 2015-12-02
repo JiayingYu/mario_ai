@@ -38,4 +38,17 @@ public class BasicAIAgent implements Agent
     public String getName() {        return name;    }
 
     public void setName(String Name) { this.name = Name;    }
+    
+  	protected boolean DangerOfGap(byte[][] levelScene) {
+  		for (int x = 9; x < 13; ++x) {
+  			boolean f = true;
+  			for (int y = 12; y < 22; ++y) {
+  				if (levelScene[y][x] != 0)
+  					f = false;
+  			}
+  			if (f && levelScene[12][11] != 0)
+  				return true;
+  		}
+  		return false;
+  	}
 }

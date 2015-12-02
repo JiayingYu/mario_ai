@@ -8,30 +8,19 @@ import java.util.PriorityQueue;
 import ch.idsia.mario.engine.sprites.Mario;
 import ch.idsia.mario.environments.Environment;
 
-public class AStartAgent extends BasicAIAgent {
+public class AStarAgent extends BasicAIAgent {
+	int count;
 
-	public AStartAgent() {
+	public AStarAgent() {
 		super("A* Agent");
+		count = 0;
+		action = new boolean[Environment.numberOfButtons];
 		reset();
 	}
 
 	public void reset() {
-		action = new boolean[Environment.numberOfButtons];
 		action[Mario.KEY_RIGHT] = true;
-		action[Mario.KEY_SPEED] = false;
-	}
-
-	private boolean DangerOfGap(byte[][] levelScene) {
-		for (int x = 9; x < 13; ++x) {
-			boolean f = true;
-			for (int y = 12; y < 22; ++y) {
-				if (levelScene[y][x] != 0)
-					f = false;
-			}
-			if (f && levelScene[12][11] != 0)
-				return true;
-		}
-		return false;
+		action[Mario.KEY_SPEED] = true;
 	}
 
 	@Override
@@ -41,15 +30,16 @@ public class AStartAgent extends BasicAIAgent {
 		}
 
 		byte[][] levelScene = observation.getCompleteObservation();
-		float[] marioPos = observation.getMarioFloatPos();
+		//float[] marioPos = observation.getMarioFloatPos();
 
 		int[] nextPos = AStartBFS(levelScene, new ArrayList<int[]>());
-		int count = 0;
+		
 		
 		if (nextPos[0] < 11 || DangerOfGap(levelScene) || levelScene[11][13] != 0 || levelScene[11][12] != 0 ) {
-			if (observation.mayMarioJump() || ( !observation.isMarioOnGround() && action[Mario.KEY_JUMP]))
-          action[Mario.KEY_JUMP] = true;
-			
+			if (observation.mayMarioJump() || ( !observation.isMarioOnGround() && action[Mario.KEY_JUMP])) {			
+				action[Mario.KEY_JUMP] = true;
+				
+			}    
 			count++;
 		} else {
 			action[Mario.KEY_JUMP] = false;
@@ -61,17 +51,11 @@ public class AStartAgent extends BasicAIAgent {
 			count = 0;
 		}
 		
-//		if (nextPos[0] > 11 && !DangerOfGap(levelScene)) {
-//			action[Mario.KEY_DOWN] = true;
-//		} else {
-//			action[Mario.KEY_DOWN] = false;
-//		}
-		
 		if (nextPos[1] < 11) {
 			action[Mario.KEY_LEFT] = true;
 		}
 		
-		//action[Mario.KEY_SPEED] = DangerOfGap(levelScene);
+    //action[Mario.KEY_SPEED] = DangerOfGap(levelScene);
 		
 		return action;
 	}

@@ -19,22 +19,6 @@ public class ScaredAgent extends BasicAIAgent implements Agent {
     int trueJumpCounter = 0;
     int trueSpeedCounter = 0;
 
-    private boolean DangerOfGap(byte[][] levelScene)
-    {
-        for (int x = 9; x < 13; ++x)
-        {
-            boolean f = true;
-            for(int y = 12; y < 22; ++y)
-            {
-                if  (levelScene[y][x] != 0)
-                    f = false;
-            }
-            if (f && levelScene[12][11] != 0)
-                return true;
-        }
-        return false;
-    }
-
     public void reset() {
         action[Mario.KEY_RIGHT] = true;
         action[Mario.KEY_SPEED] = false;
