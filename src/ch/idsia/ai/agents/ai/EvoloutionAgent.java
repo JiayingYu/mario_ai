@@ -37,7 +37,7 @@ public class EvoloutionAgent extends BasicAIAgent{
 		levelScene = observation.getCompleteObservation();
 		//float[] marioPos = observation.getMarioFloatPos();
 
-		int[] nextPos = evolutionalSearch(levelScene);
+		int[] nextPos = evolutionalSearch();
 		
 		if (nextPos[1] >= 11) {
 			action[Mario.KEY_LEFT] = false;
@@ -66,10 +66,10 @@ public class EvoloutionAgent extends BasicAIAgent{
 		return action;
 	}
 
-	private int[] evolutionalSearch(byte[][] levelScene) {
-		List<StateNode> population = initPopulation(levelScene);
+	private int[] evolutionalSearch() {
+		List<StateNode> population = initPopulation();
 		
-		for (int time = 0; time < 20; time++) {
+		for (int time = 0; time < 10; time++) {
 			List<StateNode> children= new ArrayList<StateNode>();
 
 			// create 50 children
@@ -138,7 +138,7 @@ public class EvoloutionAgent extends BasicAIAgent{
 	}
 	
 	// find all the possible path using bfs
-	private List<StateNode> initPopulation(byte[][] levelScene) {
+	private List<StateNode> initPopulation() {
 		Queue<StateNode> q = new LinkedList<StateNode>();
 		StateNode initialState = createStateNode(Environment.HalfObsHeight, 
 					Environment.HalfObsWidth, 0, new ArrayList<int[]>());
@@ -147,6 +147,7 @@ public class EvoloutionAgent extends BasicAIAgent{
 		// initial population
 		List<StateNode> population = new ArrayList<StateNode>();
 		HashSet<Integer> visitedIndex = new HashSet<Integer>();
+		visitedIndex.add(11* 11 + 11);
 		
 		int[][] diff = {{-1, -1, 0, 1, 1}, {0, 1, 1, 1, 0}};
 		
@@ -169,12 +170,12 @@ public class EvoloutionAgent extends BasicAIAgent{
 				int index = newR * 11 + newC; 
 				if (newR < 22 && newR >= 0 && newC >= 0 && newC < 22 && !visitedIndex.contains(index)) {
 					q.offer(createStateNode(newR, newC, levelScene[newR][newC], curPath));
+					visitedIndex.add(index);
 				}				
 			}
 		}
 		
 		return population;
-
 	}
 	
 	private StateNode createStateNode(int row, int col, int cellVal, List<int[]> parentPath) {
@@ -198,9 +199,8 @@ public class EvoloutionAgent extends BasicAIAgent{
 	
 //goal test: if the path reach the boundary 
 	private boolean reachBoundary(int r, int c) {
-		if (r >= 21 || r <= 0 || c >= 21 || c <= 0) return true;
+		//if (r >= 21 || r <= 0 || c >= 21 || c <= 0) return true;
+		if (r >= 21 || c >= 21) return true;
 		return false;
-	}
-
-	
+	}	
 }
