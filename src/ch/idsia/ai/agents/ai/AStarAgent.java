@@ -65,7 +65,7 @@ public class AStarAgent extends BasicAIAgent {
 
 					@Override
 					public int compare(StateNode n1, StateNode n2) {
-						return n1.score - n2.score;
+						return n2.score - n1.score;
 					}
 				});
 
@@ -107,7 +107,7 @@ public class AStarAgent extends BasicAIAgent {
 		List<int[]> curPath = copyList(parentPath);
 		curPath.add(new int[] {row, col});
 	  // if current position is obstacle -> negative score
-		int score = col - 11 + cellVal == 0 ? 0 : -100; 
+		int score = 21 - col + cellVal == 0 ? 0 : 100; 
 		return new StateNode(curPath, score);
 	}
 	
