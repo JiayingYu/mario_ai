@@ -4,6 +4,8 @@ import ch.idsia.mario.environments.Environment;
 
 
 public class HillClimbingAgent extends BasicAIAgent{
+	int count = 0;
+	
 	public HillClimbingAgent() {
 		super("Hill Climbing Agent");
 		action = new boolean[Environment.numberOfButtons];
@@ -24,14 +26,38 @@ public class HillClimbingAgent extends BasicAIAgent{
 		byte[][] levelScene = observation.getCompleteObservation();
 		int[] nextPos = getNextPosition(levelScene);
 		
-		int count = 0;
+//		
+//		if (nextPos[0] < 11 || DangerOfGap(levelScene) || levelScene[11][13] != 0 || levelScene[11][12] != 0 ) {
+//			if (observation.mayMarioJump() || ( !observation.isMarioOnGround() && action[Mario.KEY_JUMP])) {			
+//				action[Mario.KEY_JUMP] = true;
+//				
+//			}    
+//			count++;
+//		} else {
+//			action[Mario.KEY_JUMP] = false;
+//			count = 0;
+//		}
+//		
+//		if (count > 16) {
+//			action[Mario.KEY_JUMP] = false;
+//			count = 0;
+//		}
+//				
+//		return action;
 		
-		if (nextPos[0] < 11 || DangerOfGap(levelScene)) {
-			if (observation.mayMarioJump() || ( !observation.isMarioOnGround() && action[Mario.KEY_JUMP])) {
-				action[Mario.KEY_SPEED] = true;
+		if (nextPos[1] >= 11) {
+			action[Mario.KEY_LEFT] = false;
+			action[Mario.KEY_RIGHT] = true;
+		} else {
+			action[Mario.KEY_LEFT] = true;
+			action[Mario.KEY_RIGHT] = false;
+		}
+		
+		if (nextPos[0] < 11 || DangerOfGap(levelScene) || levelScene[11][13] != 0 || levelScene[11][12] != 0 ) {
+			if (observation.mayMarioJump() || ( !observation.isMarioOnGround() && action[Mario.KEY_JUMP])) {			
 				action[Mario.KEY_JUMP] = true;
-			}         
-			
+				
+			}    
 			count++;
 		} else {
 			action[Mario.KEY_JUMP] = false;
@@ -41,16 +67,6 @@ public class HillClimbingAgent extends BasicAIAgent{
 		if (count > 16) {
 			action[Mario.KEY_JUMP] = false;
 			count = 0;
-		}
-		
-//		if (nextPos[0] > 11 && !DangerOfGap(levelScene)) {
-//			action[Mario.KEY_DOWN] = true;
-//		} else {
-//			action[Mario.KEY_DOWN] = false;
-//		}
-		
-		if (nextPos[1] < 11) {
-			action[Mario.KEY_LEFT] = true;
 		}
 				
 		return action;
@@ -80,6 +96,6 @@ public class HillClimbingAgent extends BasicAIAgent{
 	}
 
 	private int getScore(int c, int r, byte cellVal) {
-		return c - 11 + 11 - r + (int) cellVal == 0 ? 0 : -100;
+		return c - 11 + (int) cellVal == 0 ? 0 : -100;
 	}
 }

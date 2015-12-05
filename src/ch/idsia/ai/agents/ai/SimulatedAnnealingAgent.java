@@ -120,6 +120,6 @@ class State {
 		int r = pos[0];
 		int c = pos[1];
 		int cellVal = (int) levelScene[r][c];
-		score = c - 11 + 11 - r + (int) cellVal == 0 ? 0 : -100;
+		score = c - 11 + (int) cellVal == 0 ? 0 : -100;
 	}
 }

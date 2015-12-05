@@ -69,7 +69,7 @@ public class EvoloutionAgent extends BasicAIAgent{
 	private int[] evolutionalSearch() {
 		List<StateNode> population = initPopulation();
 		
-		for (int time = 0; time < 10; time++) {
+		for (int time = 0; time < 100; time++) {
 			List<StateNode> children= new ArrayList<StateNode>();
 
 			// create 50 children
@@ -91,7 +91,7 @@ public class EvoloutionAgent extends BasicAIAgent{
 
 			@Override
 			public int compare(StateNode s1, StateNode s2) {
-				return s1.score - s2.score;
+				return s2.score - s1.score;
 			}
 		
 		});
